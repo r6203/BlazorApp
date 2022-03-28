@@ -1,0 +1,46 @@
+﻿@page "/counter"
+@using System.Timers
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @_currentCount</p>
+
+<button class="btn btn-success" @onclick="IncrementCount">+</button>
+<button class="btn btn-danger" @onclick="DecrementCount">-</button>
+
+@code {
+    int _currentCount = 0;
+    readonly Timer _timer = new System.Timers.Timer();
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        _timer.Elapsed += OnTimedEvent;
+        _timer.Interval = 1000;
+        _timer.Enabled = true;
+    }
+
+    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        _currentCount++;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void IncrementCount()
+    {
+        _currentCount++;
+    }
+
+    private void DecrementCount()
+    {
+        if (_currentCount > 0)
+        {
+            _currentCount--;
+        }
+    }
+
+}
